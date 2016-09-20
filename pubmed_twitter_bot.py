@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import time
 
-topic_to_tweet_about = "microbiome"
+topic_to_tweet_about = "a topic to search about on pubmed"
 max_number_of_articles_to_retrieve = 15
 
 def twitterbot(string_to_tweet) :
@@ -116,7 +116,7 @@ def string_shortener (string_to_shorten,max_size) :
     OUPUT : str(title_string)+"..."
     EXAMPLE : title_shortener(title)
     '''
-    return string_to_shorten[0:max_size]+"..."
+    return((string_to_shorten[0:max_size]+"...").capitalize())
 
 myquery =  pubmed_search(topic_to_tweet_about,max_number_of_articles_to_retrieve)
 for article in myquery :
