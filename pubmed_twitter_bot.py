@@ -144,7 +144,7 @@ for article in myquery :
             print text_to_tweet
             print len(text_to_tweet)
             twitterbot(text_to_tweet)
-            sleep(10)
+            time.sleep(10)
 
         except :
             continue
