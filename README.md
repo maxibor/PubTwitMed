@@ -1,10 +1,10 @@
 #PubTwitMed
-####A twitter bot publishing regularly all recent scientific articles from pubmed related to a given subject.
+####A twitter bot publishing regularly all recent scientific articles from PubMed related to a given subject.
 
 
 ###Requirements
 - Python 2.7.x
-- [BioPython](https://biopython.org/wiki/Biopython) 
+- [BioPython](https://biopython.org/wiki/Biopython)
 - [Tweepy](http://www.tweepy.org/)
 - [Pyshorteners](https://github.com/ellisonleao/pyshorteners)
 
