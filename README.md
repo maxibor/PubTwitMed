@@ -21,4 +21,4 @@
 - *To execute it regularly, please have a look at [Crontab](https://en.wikipedia.org/wiki/Cron)*
 
 	Contrab file example :
-	`@daily /path/to/directory/pubmed_twitter_bot.py`
+	`@daily /path/to/directory/pubmed_twitter_bot.py >> path/to/logfile.txt 2>&1`
