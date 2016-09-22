@@ -12,6 +12,7 @@ import datetime
 
 TOPIC_TO_SEARCH_AND_TWEET = "a topic to search about on pubmed"
 MAX_NB_ART_TO_GET = 15
+PATH_TO_DOI_DB = "/path/to/doi_db.txt"
 
 
 def twitterbot(string_to_tweet) :
@@ -96,7 +97,7 @@ def doi_tool (adoi) :
         EXAMPLE : doi_checker("10.1371/example.doi.42")
         '''
         dois_list=[]
-        with open("doi_db.txt","r") as doi_db :
+        with open("PATH_TO_DOI_DB","r") as doi_db :
             for line in doi_db :
                 line=line.rstrip()
                 dois_list.append(line)
@@ -115,7 +116,7 @@ def doi_tool (adoi) :
         OUTPUT : None
         EXAMPLE : doi_appender("10.1371/example.doi.42")
         '''
-        with open("doi_db.txt","a") as doi_db :
+        with open("PATH_TO_DOI_DB","a") as doi_db :
                 doi_db.write(doi_string+"\n")
 
 
