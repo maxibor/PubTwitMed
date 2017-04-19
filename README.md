@@ -1,4 +1,7 @@
 # PubTwitMed
+
+[![Build Status](https://travis-ci.org/maxibor/PubTwitMed.svg?branch=master)](https://travis-ci.org/maxibor/PubTwitMed)
+
 #### A twitter bot publishing regularly all recent scientific articles from PubMed related to a given subject.
 
 
