@@ -133,9 +133,15 @@ def pubmed_search(search_term, nb_max_articles, entrez_email):
         my_secondary_handle = Entrez.esummary(db="pubmed", id=listId)
         my_record = Entrez.read(my_secondary_handle)
         one_article = my_record[0]
+        if len(one_article["AuthorList"]) > 1:
+            authorlist = one_article["AuthorList"][0].encode(
+                'utf-8').decode("utf-8")+" et al."
+        else:
+            authorlist = one_article["AuthorList"][0].encode(
+                'utf-8').decode("utf-8")
         try:
             article_dictionary[one_article["DOI"]] = [one_article["Title"],
-                                                      one_article["AuthorList"][0], one_article["PubDate"]]
+                                                      authorlist, one_article["PubDate"]]
         except:
             continue
         time.sleep(0.5)
@@ -238,9 +244,8 @@ if __name__ == '__main__':
                   [0].encode('utf-8').decode("utf-8"))
             # final_title = string_shortener(myquery[article][0],60)
             print("First Author : ",
-                  myquery[article][1].encode('utf-8').decode("utf-8"))
-            final_author = myquery[article][1].encode(
-                'utf-8').decode("utf-8")+" et al."
+                  myquery[article][1])
+            final_author = myquery[article][1]
             print("PubDate : ", myquery[article][2])
             final_date = myquery[article][2]
             final_url = mystatus
