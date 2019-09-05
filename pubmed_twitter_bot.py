@@ -143,6 +143,21 @@ def pubmed_search(search_term, nb_max_articles, entrez_email):
     return(article_dictionary)
 
 
+def string_shortener(string_to_shorten, max_size):
+    '''
+    Shortens titles strings that are more than max_size
+    Returns shortened titled strings
+
+    INPUT : title_string,max_size(str,int)
+    OUPUT : shortened_title_string+"..."(str)
+    EXAMPLE : title_shortener(title,40)
+    '''
+    if len(string_to_shorten) > max_size:
+        return((string_to_shorten[0:max_size]+"...").capitalize())
+
+    return(string_to_shorten.capitalize())
+
+
 def doi_tool(adoi, doi_db):
     '''
     Gets a DOI in input, and check if it already in doi_db.txt file.
@@ -209,28 +224,13 @@ def doi_tool(adoi, doi_db):
         return("already")
 
 
-def string_shortener(string_to_shorten, max_size):
-    '''
-    Shortens titles strings that are more than max_size
-    Returns shortened titled strings
-
-    INPUT : title_string,max_size(str,int)
-    OUPUT : shortened_title_string+"..."(str)
-    EXAMPLE : title_shortener(title,40)
-    '''
-    if len(string_to_shorten) > max_size:
-        return((string_to_shorten[0:max_size]+"...").capitalize())
-    else:
-        return((string_to_shorten.capitalize())
-
-
 if __name__ == '__main__':
-    DOI_DB, ART_MAX, TOPIC, ENTREZ_EMAIL, CONS_KEY, CONS_SECRET, ACC_TOK, ACC_TOK_SEC=_get_args()
+    DOI_DB, ART_MAX, TOPIC, ENTREZ_EMAIL, CONS_KEY, CONS_SECRET, ACC_TOK, ACC_TOK_SEC = _get_args()
     print("> > > > "+str(datetime.datetime.now()))
-    myquery=pubmed_search(TOPIC, ART_MAX, ENTREZ_EMAIL)
+    myquery = pubmed_search(TOPIC, ART_MAX, ENTREZ_EMAIL)
 
     for article in myquery:
-        mystatus=doi_tool(article, DOI_DB)
+        mystatus = doi_tool(article, DOI_DB)
         if mystatus != "already":
             print("DOI : ", article)
             print("URL : ", mystatus)
@@ -239,18 +239,18 @@ if __name__ == '__main__':
             # final_title = string_shortener(myquery[article][0],60)
             print("First Author : ",
                   myquery[article][1].encode('utf-8').decode("utf-8"))
-            final_author=myquery[article][1].encode(
+            final_author = myquery[article][1].encode(
                 'utf-8').decode("utf-8")+" et al."
             print("PubDate : ", myquery[article][2])
-            final_date=myquery[article][2]
-            final_url=mystatus
-            hashtag=f"#{TOPIC}"
+            final_date = myquery[article][2]
+            final_url = mystatus
+            hashtag = f"#{TOPIC}"
             try:
-                almost_to_tweet=" - "+final_author+" - "+final_url+" "+hashtag
-                max_title_len=200 - len(almost_to_tweet)
-                final_title=string_shortener(
+                almost_to_tweet = " - "+final_author+" - "+final_url+" "+hashtag
+                max_title_len = 200 - len(almost_to_tweet)
+                final_title = string_shortener(
                     myquery[article][0].encode('utf-8').decode("utf-8"), max_title_len)
-                text_to_tweet=final_title+" - "+final_author+" - "+final_url+" "+hashtag
+                text_to_tweet = final_title+" - "+final_author+" - "+final_url+" "+hashtag
                 print(text_to_tweet)
                 print("tweet length :", len(text_to_tweet))
                 print("= = = = = = =")
