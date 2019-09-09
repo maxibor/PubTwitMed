@@ -22,7 +22,7 @@ $ python pubmed_twitter_bot.py -h
 usage: pubtwitmed [-h] [-doi DOI_DB] [-artmax ARTMAX] [-topic TOPIC]
                   [-email ENTREZ_EMAIL] [-ck CONSUMER_KEY]
                   [-cs CONSUMER_SECRET] [-at ACCESS_TOKEN]
-                  [-ats ACCESS_TOKEN_SECRET]
+                  [-ats ACCESS_TOKEN_SECRET] [-nak NCBI_API_KEY]
 
 ==========================================================
 PubTwitMed
@@ -45,6 +45,7 @@ optional arguments:
   -at ACCESS_TOKEN      Twitter access token
   -ats ACCESS_TOKEN_SECRET
                         Twitter access token secret
+  -nak NCBI_API_KEY     NCBI api key
 ```
 
 
