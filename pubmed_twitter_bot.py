@@ -70,6 +70,12 @@ Homepage & Documentation: github.com/maxibor/PubTwitMed
         default=None,
         help="Twitter access token secret"
     )
+    parser.add_argument(
+        '-nak',
+        dest="ncbi_api_key",
+        default=None,
+        help="NCBI api key"
+    )
 
     args = parser.parse_args()
 
@@ -81,8 +87,9 @@ Homepage & Documentation: github.com/maxibor/PubTwitMed
     cons_secret = args.consumer_secret
     acc_tok = args.access_token
     acc_tok_sec = args.access_token_secret
+    ncbi_key = args.ncbi_api_key
 
-    return(doi_db, art_max, topic, entrez_email, cons_key, cons_secret, acc_tok, acc_tok_sec)
+    return(doi_db, art_max, topic, entrez_email, cons_key, cons_secret, acc_tok, acc_tok_sec, ncbi_key)
 
 
 TOPIC_TO_SEARCH_AND_TWEET = "a topic to search about on pubmed"
@@ -107,10 +114,11 @@ def twitterbot(string_to_tweet, ck, cs, at, ats):
     login = tweepy.OAuthHandler(ck, cs)
     login.set_access_token(at, ats)
     this_api = tweepy.API(login)
-    this_api.update_status(status=string_to_tweet)
+    res = this_api.update_status(status=string_to_tweet)
+    return(res)
 
 
-def pubmed_search(search_term, nb_max_articles, entrez_email):
+def pubmed_search(search_term, nb_max_articles, entrez_email, ncbi_key):
     '''
     Search Pubmed for the nb_max_articles most recent articles on the
     search_term subject.
@@ -122,6 +130,8 @@ def pubmed_search(search_term, nb_max_articles, entrez_email):
 
     article_dictionary = {}
     Entrez.email = entrez_email
+    if ncbi_key:
+        Entrez.api_key = ncbi_key
     max_number_of_articles = nb_max_articles
 
     myhandle = Entrez.esearch(db="pubmed", term=search_term,
@@ -144,7 +154,10 @@ def pubmed_search(search_term, nb_max_articles, entrez_email):
                                                       authorlist, one_article["PubDate"]]
         except:
             continue
-        time.sleep(0.5)
+        if ncbi_key:
+            time.sleep(0.5)
+        else:
+            time.sleep(5)
         # break
     return(article_dictionary)
 
@@ -231,9 +244,9 @@ def doi_tool(adoi, doi_db):
 
 
 if __name__ == '__main__':
-    DOI_DB, ART_MAX, TOPIC, ENTREZ_EMAIL, CONS_KEY, CONS_SECRET, ACC_TOK, ACC_TOK_SEC = _get_args()
+    DOI_DB, ART_MAX, TOPIC, ENTREZ_EMAIL, CONS_KEY, CONS_SECRET, ACC_TOK, ACC_TOK_SEC, NCBI_KEY = _get_args()
     print("> > > > "+str(datetime.datetime.now()))
-    myquery = pubmed_search(TOPIC, ART_MAX, ENTREZ_EMAIL)
+    myquery = pubmed_search(TOPIC, ART_MAX, ENTREZ_EMAIL, NCBI_KEY)
 
     for article in myquery:
         mystatus = doi_tool(article, DOI_DB)
@@ -260,9 +273,10 @@ if __name__ == '__main__':
                 print("tweet length :", len(text_to_tweet))
                 print("= = = = = = =")
                 if CONS_KEY and CONS_SECRET and ACC_TOK and ACC_TOK_SEC:
-                    twitterbot(text_to_tweet, CONS_KEY,
-                               CONS_SECRET, ACC_TOK, ACC_TOK_SEC)
-                time.sleep(10)
+                    res = twitterbot(text_to_tweet, CONS_KEY,
+                                CONS_SECRET, ACC_TOK, ACC_TOK_SEC)
+                    print("Twitter API response:", res)
+                    time.sleep(10)
             except Exception as e:
                 print(e)
                 continue
